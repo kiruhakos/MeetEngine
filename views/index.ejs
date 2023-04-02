@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.2.0/css/all.css">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="shortcut icon" type="image/png" href="/img/logo.png">
+    <title>MeetEngine</title>
+</head>
+<body class="body-index">
+    <header class="header-index">
+    <div>
+        <span class="logo" title="MeetEngine"><h4>MeetEngine</h4></span>
+    </div>
+    </header>
+<div class="main-index">
+    <div class="about-main"><h1>MeetEngine - is the easiest and fastest way to setup convenient video meetings online.</h1></div>
+    <div class="form">
+      <h1>Meeting Options</h1>
+      <button id="createMeeting">Create a new meeting</button>
+      <p>or</p>
+      <form id="idForm" onsubmit="event.preventDefault(); window.location.href='/new-room/' + encodeURIComponent(document.getElementById('room').value)">
+        <input type="text" id="room" name="room" placeholder="Enter room Id">
+        <button type="submit" class="submit">Submit</button>
+      </form>
+</div>
+</div>
+<script>
+document.getElementById('createMeeting').addEventListener('click', function() {
+  window.location.href = "/new-room"
+})
+</script>
+<div class="features-main">
+    <div class="question"><h1>Why MeetEngine?</h1></div>
+    <div class="answers">
+        <div class="tooltip-container">
+          <h1 class="answer tooltip-trigger" aria-describedby="tooltip1"><i class="fa-solid fa-check"></i> Online</h1>
+          <div class="tooltip" id="tooltip1">
+            <div class="tooltip-text">You do not need to download MeetEngine in order to use it.</div>
+          </div>
+        </div>
+        <div class="tooltip-container">
+          <h1 class="answer tooltip-trigger" aria-describedby="tooltip2"><i class="fa-solid fa-check"></i> Fast and free</h1>
+          <div class="tooltip" id="tooltip2">
+            <div class="tooltip-text">MeetEngine does not require money and works very fast.</div>
+          </div>
+        </div>
+        <div class="tooltip-container">
+          <h1 class="answer tooltip-trigger" aria-describedby="tooltip3"><i class="fa-solid fa-check"></i> Easy to use</h1>
+          <div class="tooltip" id="tooltip3">
+            <div class="tooltip-text">MeetEngine setup is fast and very simple, just click on a meeting button and you are done.</div>
+          </div>
+        </div>
+        <div class="tooltip-container">
+          <h1 class="answer tooltip-trigger" aria-describedby="tooltip4"><i class="fa-solid fa-check"></i> Secure</h1>
+          <div class="tooltip" id="tooltip4">
+            <div class="tooltip-text">Every room has its own random id, so unknowns will not join the room, unless they have a link.</div>
+          </div>
+        </div>
+      </div>
+</div>
+<footer>
+    <div class="bottom">
+        <h1 class="logo-bottom">MeetEngine</h1>
+    </div>
+    <div class="description-bottom"><p>Online video meeting service.</p></div>
+    <!--<div class="platforms">
+        <div class="description-bottom-platforms"><h4>Other platforms</h4></div>
+        <div class="links">
+           <a href=""><i class="fa-brands fa-telegram"></i></a>
+           <a href=""><i class="fa-brands fa-twitter"></i></a></div>
+    </div>-->
+</footer>
+<script src="/script.js" defer></script>
+</body>
+</html>

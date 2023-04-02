@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      const ROOM_ID = "<%= roomId %>"
+    </script>
+    <script defer src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="/script.js" defer></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.2.0/css/all.css">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="shortcut icon" type="image/png" href="/img/logo.png">
+    <title>Meeting room</title>
+</head>
+
+<body class="body-room">
+  <header class="header-room">
+    <div>
+      <span class="logo" title="MeetEngine"><h4>MeetEngine</h4></span>
+    </div>
+    <form id="userForm"><input type="text" id="username" name="username" placeholder="Enter your name...">
+      <button type="submit">Submit</button>
+    </form>
+    <div class="nousers">
+      <i class="fa-solid fa-circle-info"></i><p>Enter your name to see your video and videos of other participants.</p>
+    </div>
+  </header>
+  <noscript>
+    <div class="no-js"><h1 class="no-js-message">JavaScript is turned off</h1>
+    <p>Enable JavaScript in your browser settings to run this app.</p></div>
+  </noscript>
+    <div class="main" id="main">
+      <!--video-->
+      <div id="screenShareGrid"></div>
+        <div class="video-group" id="video-group">
+          
+          <div id="video-grid"></div>
+        </div>
+        <div class="room_right">
+          
+          <div class="chat_window">
+             
+            <div class="chat_top">
+            <div id ="closeBtn"><a href="#">X</a></div><h3>Chat</h3>
+          </div>  
+              <div class="message_input">
+              <input id="input_chat_message" type="text" autocomplete="off" placeholder="Type some text..."><button id="send" class="chat_button" type="submit">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+              </div>
+              <div class="message_container" id="messageContainer">
+    
+              </div>
+        </div>
+      </div>
+
+      <div class="room_right_participants">
+          
+        <div class="participants_window">
+           
+          <div class="participants_top">
+          <div id ="closeBtn_participants"><a href="#">X</a></div><h3>Participants</h3>
+        </div>  
+              <div class="link">
+                <button title="Copy the link to share." onclick="copyLink()" id="copyButton"><i class="fa-solid fa-copy"></i></button>
+            </div>
+          
+          <div id="userList">
+
+          </div>
+      </div>
+
+    </div>
+         <!--<div class="link">
+            <button title="Copy the link of the current web page" onclick="copyLink()" id="copyButton"><i class="fa-solid fa-copy"></i></button>
+         </div>-->
+      </div>
+      <script>
+        function copyLink(){
+          let link = window.location.href
+          let copyText = document.createElement('textarea')
+          copyText.value = link
+
+          document.body.appendChild(copyText)
+          copyText.select()
+          document.execCommand('copy')
+          document.body.removeChild(copyText)
+          alert('Link copied to the clipboard')
+        }
+      </script>
+          <div class="controls">
+            <div class="controls_block">
+              <button title="Mute/Unmute">
+              <div
+                class="controls_button mute_button"
+                id="muteButton"
+                onclick="muteUnmute()"
+              >
+                <i class="fa fa-microphone"></i>
+              </div>
+            </button>
+            <button title="Stop/Resume Video">
+              <div
+                class="controls_button video_button"
+                id="playPauseVideo"
+                onclick="playStopVideo()"
+              >
+                <i class="fa fa-video-camera"></i>
+                
+              </div>
+            </button>
+            <button title="Screen share">
+              <div
+                class="controls_button screen_share_button"
+                id="screenShareBtn"
+                
+              >
+              <i class="fa-solid fa-desktop"></i>
+              
+              </div>
+            </button>
+            <button title="Chat">
+              <div
+                class="controls_button chat_button"
+                id="chat"
+                
+              >
+              <i class="fa-solid fa-comment"></i>
+                
+              </div>
+            </button>
+            
+            <button title="Participants">
+              <div
+                class="controls_button participants_button"
+                id="Participants"
+                
+              >
+              <i class="fa-solid fa-users"></i>
+              
+              </div>
+            </button>
+            <button class="leave-meeting" title="Leave Meeting" onclick="leaveRoom(); window.close()">
+                <div class="controls_button leaveMeeting" id="leave-meeting">
+                    <i class="fa fa-phone"></i>
+                </div>
+              </button>
+      </div>
+        </div>
+        <script>
+          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        chat.addEventListener("click", () => {
+        document.querySelector(".room_right").style.display = "flex";
+        document.querySelector(".room_right").style.flex = "1";
+        document.querySelector(".video-group").style.display = "none";
+      });    
+        closeBtn.addEventListener("click", () => {
+          document.querySelector(".video-group").style.display = "flex";
+          document.querySelector(".video-group").style.flex = "1";
+          document.querySelector(".room_right").style.display = "none";
+});
+        Participants.addEventListener("click", () => {
+        document.querySelector(".room_right_participants").style.display = "flex";
+        document.querySelector(".room_right_participants").style.flex = "1";
+        document.querySelector(".video-group").style.display = "none";
+      });   
+      closeBtn_participants.addEventListener("click", () => {
+          document.querySelector(".video-group").style.display = "flex";
+          document.querySelector(".video-group").style.flex = "1";
+          document.querySelector(".room_right_participants").style.display = "none";
+}); } else {
+  chat.addEventListener("click", () => {
+        document.querySelector(".room_right").style.display = "flex";
+        document.querySelector(".room_right").style.flex = "1";
+        
+      });    
+        closeBtn.addEventListener("click", () => {
+          document.querySelector(".video-group").style.display = "flex";
+          document.querySelector(".video-group").style.flex = "1";
+          document.querySelector(".room_right").style.display = "none";
+});
+        Participants.addEventListener("click", () => {
+        document.querySelector(".room_right_participants").style.display = "flex";
+        document.querySelector(".room_right_participants").style.flex = "1";
+        
+      });   
+      closeBtn_participants.addEventListener("click", () => {
+          document.querySelector(".video-group").style.display = "flex";
+          document.querySelector(".video-group").style.flex = "1";
+          document.querySelector(".room_right_participants").style.display = "none";
+});
+}
+  </script>
+</body>
+
+</html>
