@@ -8,7 +8,7 @@ const messageContainer = document.querySelector('.message_container')
 const sendForm = document.getElementById('sendForm')
 let myVideo = null;
 const myPeer = new Peer(undefined, {
-  host: '/',
+  host: 'https://meetengine.onrender.com',
   port: '3001'
 })
 
