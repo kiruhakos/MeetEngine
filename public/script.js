@@ -8,7 +8,7 @@ const messageContainer = document.querySelector('.message_container')
 const sendForm = document.getElementById('sendForm')
 let myVideo = null;
 const myPeer = new Peer(undefined, {
-  host: '/',
+  host: 'https://meetengine.onrender.com',
   port: '3001'
 })
 
@@ -39,12 +39,13 @@ document.getElementById("userForm").addEventListener("submit", (event) => {
       myVideo.muted = true
       addVideoStream(myVideo, stream)
       myPeer.on('call', call => {
+        if(call){
         call.answer(stream)
         let video = document.createElement('video')
         call.on('stream', userVideoStream => {
           addVideoStream(video, userVideoStream)
         })
-      })
+      }})
       socket.on('user-connected', (userId) => {
         connectToNewUser(userId, stream)
       })
